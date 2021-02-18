@@ -1,7 +1,9 @@
 from tkinter import *
 from tkinter import ttk
+from MYLOGIN import login
 
-import login
+
+
 
 class MainApp(Tk):
     def __init__(self):
@@ -11,11 +13,6 @@ class MainApp(Tk):
         self.login= login.Login(self)
         self.login.pack(side=TOP)
 
-
-
-
-
-
 if __name__=="__main__":
     app= MainApp()
-    app.mainloop()
+    app.mainloop() 
