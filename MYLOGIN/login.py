@@ -143,8 +143,8 @@ class Login(ttk.Frame):
         longitud = len(NewPass)
         upper = NewPass.upper()
       
-        if longitud < 8 and NewPass != upper:
-            self.label= ttk.Label(okRegistro, text="La contraseña debe contener al menos 8 caracteres y una mayuscula ", background="light grey",foreground="red", font="Times, 13", anchor=CENTER)
+        if longitud <= 8 and NewPass != upper:
+            self.label= ttk.Label(okRegistro, text="La contraseña debe contener al menos 9 caracteres y una mayuscula ", background="light grey",foreground="red", font="Times, 13", anchor=CENTER)
             self.label.pack(side=BOTTOM, fill= BOTH, expand= True)                   
         else:
             self.label= ttk.Label(okRegistro,  text="registro correcto ", background="light grey",foreground="green", font="Times, 13", anchor=CENTER)
