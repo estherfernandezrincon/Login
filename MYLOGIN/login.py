@@ -12,6 +12,8 @@ config = c ['DEFAULT']
 DBFILE = config ['DBFILE']
 
 
+
+
 class Login(ttk.Frame):
     def __init__(self, parent):
         ttk.Frame.__init__(self, parent, width=700, height=500)
@@ -47,9 +49,13 @@ class Login(ttk.Frame):
         self.botonB= ttk.Button(self,text="Cancel", command=quit)
         self.botonB.pack(side=RIGHT, fill= BOTH, expand=True, padx=35, pady=35)
 
+    
+
     def AlreadyRegistered(self):
         self.entry_usuario.config(state="normal")
         self.entry_contraseña.config(state="normal")
+
+           
 
         
     def Validar(self):        
@@ -57,7 +63,7 @@ class Login(ttk.Frame):
         contraseña = self.contraseña.get()
       
 
-        conn = sqlite3.connect("MYLOGIN/data/base_de_datos.db")
+        conn = sqlite3.connect(DBFILE)
         c = conn.cursor()
 
         c.execute( 'SELECT Name, Password FROM REGISTRO;')
@@ -79,13 +85,9 @@ class Login(ttk.Frame):
             if contraseña in datos_introducidos:
                 b.append(contraseña[1])
 
-      
- 
-
-    
         if self.usuario.get() in a and self.contraseña.get() in b: 
                 
-            label= ttk.Label( text="acceso correcto ", background="light grey",foreground="red", font="Times, 13", anchor=S)
+            label= ttk.Label(text="acceso correcto ", background="light grey",foreground="red", font="Times, 13", anchor=S)
             label.pack(side=BOTTOM, fill= BOTH, expand= True)
 
 
@@ -100,7 +102,10 @@ class Login(ttk.Frame):
         if self.usuario != "" and self.contraseña != "":
             self.usuario.set("")
             self.contraseña.set("")
+
+    
         
+   
         
     def Register(self):
         newWindow= Toplevel()
@@ -128,6 +133,21 @@ class Login(ttk.Frame):
         self.button_nuevo=ttk.Button(newWindow, text= "Create Account", command= self.Datos)
         self.button_nuevo.pack(side=TOP)
 
+            
+        conn = sqlite3.connect(DBFILE)
+        c = conn.cursor()
+        c.execute('''CREATE TABLE IF NOT EXISTS REGISTRO (
+            
+            Name TEXT NOT NULL,
+            Password TEXT NOT NULL,  
+            id INTEGER PRIMARY KEY ,        
+        )''')
+        print("Tabla creada con exito")
+        conn.commit()
+        conn.close()
+    
+
+
         
 
 
@@ -150,13 +170,14 @@ class Login(ttk.Frame):
             self.label= ttk.Label(okRegistro,  text="registro correcto ", background="light grey",foreground="green", font="Times, 13", anchor=CENTER)
             self.label.pack(side=BOTTOM, fill= BOTH, expand= True)
 
-        conn = sqlite3.connect("MYLOGIN/data/base_de_datos.db")
+        
+        conn = sqlite3.connect(DBFILE)
         c = conn.cursor()
 
         c.execute('INSERT INTO REGISTRO ( Name, Password ) VALUES (?,?) ;' , 
                 (NewUser, NewPass))
 
-        print(NewUser)
+        
 
         conn.commit()
         conn.close()
